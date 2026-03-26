@@ -4,6 +4,7 @@ import { useGeolocation } from './hooks/useGeolocation';
 import { useStations } from './hooks/useStations';
 import { useLocationName } from './hooks/useLocationName';
 import { LocationInput } from './components/LocationInput';
+import { OriginInput } from './components/OriginInput';
 import { TankSettings, loadTankSettings } from './components/TankSettings';
 import type { Settings as TankSettingsValue } from './components/TankSettings';
 import { RouteMap } from './components/RouteMap';
@@ -80,6 +81,10 @@ export default function App() {
   const [destinationPlaceId, setDestinationPlaceId] = useState('');
   const [tankSettings, setTankSettings] = useState<TankSettingsValue>(loadTankSettings);
 
+  // Origin can be overridden by the user; falls back to GPS location.
+  const [originOverride, setOriginOverride] = useState<LatLng | null>(null);
+  const originLatLng = originOverride ?? geo.location;
+
   const [screen, setScreen] = useState<Screen>('setup');
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -92,13 +97,21 @@ export default function App() {
     setDestinationPlaceId(placeId);
   }, []);
 
+  const handleOriginSelect = useCallback((_address: string, latLng: LatLng) => {
+    setOriginOverride(latLng);
+  }, []);
+
+  const handleOriginReset = useCallback(() => {
+    setOriginOverride(null);
+  }, []);
+
   const handleSearch = async () => {
-    if (!geo.location || !destinationPlaceId) return;
+    if (!originLatLng || !destinationPlaceId) return;
     setScreen('loading');
     setError(null);
 
     try {
-      const route = await getRoute(geo.location, destinationPlaceId);
+      const route = await getRoute(originLatLng, destinationPlaceId);
       const currentFuelL = (tankSettings.currentFuelPct / 100) * tankSettings.tankCapacityL;
 
 const optimiserResult = runOptimiser({
@@ -121,7 +134,7 @@ const optimiserResult = runOptimiser({
     }
   };
 
-  const canSearch = !!geo.location && !!destinationPlaceId && stations.length > 0;
+  const canSearch = !!originLatLng && !!destinationPlaceId && stations.length > 0;
 
   if (screen === 'loading') return <LoadingScreen />;
 
@@ -138,7 +151,7 @@ const optimiserResult = runOptimiser({
         <div className="flex-1 overflow-hidden bg-ink-950">
           <ResultsPanel
             result={result}
-            origin={geo.location!}
+            origin={originLatLng!}
             destinationAddress={destinationAddress}
             onBack={() => setScreen('setup')}
           />
@@ -160,31 +173,22 @@ const optimiserResult = runOptimiser({
       {/* Form */}
       <div className="flex-1 overflow-y-auto px-5 py-5 space-y-3">
 
-        {/* GPS status */}
-        <div className="flex items-center gap-3 px-4 py-3.5 bg-ink-800 rounded-2xl border border-ink-700">
-          <span className="text-xl shrink-0">
-            {geo.loading ? '⏳' : geo.error ? '❌' : '📍'}
-          </span>
-          <div className="min-w-0">
-            {geo.loading && (
-              <p className="text-sm font-semibold text-ink-500">Getting your location…</p>
-            )}
-            {geo.error === 'denied' && (
-              <>
-                <p className="text-sm font-bold text-red-600">Location access denied</p>
-                <p className="text-xs text-red-400 mt-0.5">Enable location in your browser settings.</p>
-              </>
-            )}
-            {geo.error === 'unavailable' && (
-              <p className="text-sm font-bold text-red-600">Location unavailable</p>
-            )}
-            {geo.location && !geo.error && (
-              <p className="text-sm font-bold text-ink-50">
-                {locationName ?? `${geo.location.lat.toFixed(3)}, ${geo.location.lng.toFixed(3)}`}
-              </p>
-            )}
+        {/* Origin — prefills with GPS suburb, user can override */}
+        {geo.error === 'denied' && (
+          <div className="flex items-center gap-3 px-4 py-3.5 bg-ink-800 rounded-2xl border border-red-900/50">
+            <span className="text-xl shrink-0">❌</span>
+            <div>
+              <p className="text-sm font-bold text-red-500">Location access denied</p>
+              <p className="text-xs text-red-400 mt-0.5">Enable location in your browser settings.</p>
+            </div>
           </div>
-        </div>
+        )}
+        <OriginInput
+          defaultValue={locationName ?? (geo.loading ? 'Getting your location…' : '')}
+          onSelect={handleOriginSelect}
+          onReset={handleOriginReset}
+          isModified={originOverride !== null}
+        />
 
         {/* Destination */}
         <LocationInput onSelect={handlePlaceSelect} />
@@ -236,7 +240,7 @@ const optimiserResult = runOptimiser({
           disabled={!canSearch}
           className="w-full py-4 bg-amber-500 hover:bg-amber-400 active:bg-amber-600 disabled:bg-ink-800 disabled:text-ink-600 text-white font-black text-base rounded-2xl transition-colors shadow-sm"
         >
-          {!geo.location
+          {!originLatLng
             ? 'Waiting for location…'
             : !destinationPlaceId
               ? 'Enter a destination'
