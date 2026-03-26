@@ -69,7 +69,7 @@ export function PrivacyModal({ onClose }: Props) {
           </div>
 
           <p className="text-ink-600 text-xs pt-2">
-            Last updated March 2026 · Questions? Built by Zachary O'Neil
+            Last updated March 2026
           </p>
         </div>
       </div>
