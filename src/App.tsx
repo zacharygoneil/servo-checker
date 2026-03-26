@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { PrivacyModal } from './components/PrivacyModal';
 import { useGeolocation } from './hooks/useGeolocation';
 import { useStations } from './hooks/useStations';
 import { useLocationName } from './hooks/useLocationName';
@@ -80,6 +81,7 @@ export default function App() {
   const [tankSettings, setTankSettings] = useState<TankSettingsValue>(loadTankSettings);
 
   const [screen, setScreen] = useState<Screen>('setup');
+  const [showPrivacy, setShowPrivacy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<OptimiserResult | null>(null);
   const [routeResult, setRouteResult] = useState<RouteResult | null>(null);
@@ -218,6 +220,9 @@ const optimiserResult = runOptimiser({
 
       </div>
 
+      {/* Privacy modal */}
+      {showPrivacy && <PrivacyModal onClose={() => setShowPrivacy(false)} />}
+
       {/* CTA — bottom safe area */}
       <div className="px-5 pt-3 bg-ink-950 border-t border-ink-800" style={{ paddingBottom: 'max(2.5rem, env(safe-area-inset-bottom))' }}>
         <button
@@ -234,6 +239,12 @@ const optimiserResult = runOptimiser({
                 ? 'Loading stations…'
                 : 'Find cheapest stop →'}
         </button>
+        <p className="text-center text-xs text-ink-700 mt-3">
+          Prices from{' '}
+          <a href="https://www.vic.gov.au/fair-fuel" target="_blank" rel="noopener noreferrer" className="underline hover:text-ink-500">Service Victoria</a>
+          {' · '}
+          <button type="button" onClick={() => setShowPrivacy(true)} className="underline hover:text-ink-500">Privacy</button>
+        </p>
       </div>
     </div>
   );
