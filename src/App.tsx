@@ -181,20 +181,12 @@ const optimiserResult = runOptimiser({
       <div className="flex-1 overflow-y-auto px-5 py-5 space-y-3">
 
         {/* Origin — prefills with GPS suburb, user can override */}
-        {geo.error === 'denied' && (
-          <div className="flex items-center gap-3 px-4 py-3.5 bg-ink-800 rounded-2xl border border-red-900/50">
-            <span className="text-xl shrink-0">❌</span>
-            <div>
-              <p className="text-sm font-bold text-red-500">Location access denied</p>
-              <p className="text-xs text-red-400 mt-0.5">Enable location in your browser settings.</p>
-            </div>
-          </div>
-        )}
         <OriginInput
           defaultValue={locationName ?? (geo.loading ? 'Getting your location…' : '')}
           onSelect={handleOriginSelect}
           onReset={handleOriginReset}
           isModified={originOverride !== null}
+          gpsState={geo.loading ? 'loading' : geo.error === 'denied' ? 'denied' : geo.location ? 'ok' : 'waiting'}
         />
 
         {/* Destination */}
