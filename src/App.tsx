@@ -189,6 +189,11 @@ const optimiserResult = runOptimiser({
         {/* Destination */}
         <LocationInput onSelect={handlePlaceSelect} />
 
+        {/* Victoria-only note */}
+        <p className="text-xs text-ink-600 px-1 -mt-1">
+          🗺️ Currently covering Victorian routes only.
+        </p>
+
         {/* Vehicle settings */}
         <TankSettings value={tankSettings} onChange={setTankSettings} />
 

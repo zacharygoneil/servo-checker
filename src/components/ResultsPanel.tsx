@@ -80,7 +80,9 @@ export function ResultsPanel({ result, origin, destinationAddress, onBack }: Pro
           <div className="bg-ink-800 border border-ink-700 rounded-2xl px-4 py-8 text-center">
             <p className="text-3xl mb-3">🔍</p>
             <p className="text-sm font-bold text-ink-100">No stations found near this route</p>
-            <p className="text-xs text-ink-400 mt-1.5">Try a different fuel type or destination.</p>
+            <p className="text-xs text-ink-400 mt-1.5 leading-relaxed">
+              Servo Checker covers Victorian routes only. If your route passes through Victoria, try a different fuel type.
+            </p>
           </div>
         )}
 
