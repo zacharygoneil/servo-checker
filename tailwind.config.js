@@ -7,7 +7,7 @@ export default {
         sans: ['"DM Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
       },
       colors: {
-        // Amber — the Bowser brand color
+        // Amber — the Servo Checker brand color
         brand: {
           50:  '#fffbeb',
           100: '#fef3c7',
