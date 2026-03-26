@@ -34,6 +34,10 @@ export function ResultsPanel({ result, origin, destinationAddress, onBack }: Pro
     ? `${cheapestOnRoutePriceCents.toFixed(1)}¢ on route`
     : onRouteBaselineLabel;
 
+  // If the top off-route station has a meaningful saving it becomes the overall
+  // hero recommendation — it's already been filtered to net saving > $2.
+  const detourIsHero = offRouteStations.length > 0 && offRouteStations[0].netSavingDollars > 0;
+
   return (
     <div className="flex flex-col h-full bg-ink-950">
       {/* Nav row */}
@@ -86,8 +90,52 @@ export function ResultsPanel({ result, origin, destinationAddress, onBack }: Pro
           </div>
         )}
 
-        {/* ── ON ROUTE ─────────────────────────────────────────────────── */}
-        {onRouteStations.length > 0 && (
+        {/* ── DETOUR IS THE HERO ───────────────────────────────────────── */}
+        {detourIsHero && (
+          <>
+            <StationCard
+              station={offRouteStations[0]}
+              rank={1}
+              isHero
+              isOffRoute
+              baselineLabel={offRouteBaselineLabel}
+              onNavigate={() => handleNavigate(offRouteStations[0])}
+            />
+
+            {/* Remaining off-route options */}
+            {offRouteStations.slice(1).map((station, i) => (
+              <StationCard
+                key={station.site_id}
+                station={station}
+                rank={i + 2}
+                isOffRoute
+                baselineLabel={offRouteBaselineLabel}
+                onNavigate={() => handleNavigate(station)}
+              />
+            ))}
+
+            {/* On-route stations shown as secondary */}
+            {onRouteStations.length > 0 && (
+              <>
+                <p className="text-xs font-bold text-ink-500 uppercase tracking-widest pt-2 px-1">
+                  On your route
+                </p>
+                {onRouteStations.map((station, i) => (
+                  <StationCard
+                    key={station.site_id}
+                    station={station}
+                    rank={i + 1}
+                    baselineLabel={onRouteBaselineLabel}
+                    onNavigate={() => handleNavigate(station)}
+                  />
+                ))}
+              </>
+            )}
+          </>
+        )}
+
+        {/* ── ON-ROUTE IS THE HERO (no worthwhile detour) ──────────────── */}
+        {!detourIsHero && onRouteStations.length > 0 && (
           <>
             <p className="text-xs font-bold text-ink-500 uppercase tracking-widest pt-1 px-1">
               On your route
@@ -111,8 +159,8 @@ export function ResultsPanel({ result, origin, destinationAddress, onBack }: Pro
           </>
         )}
 
-        {/* ── OFF ROUTE ────────────────────────────────────────────────── */}
-        {offRouteStations.length > 0 && (
+        {/* ── OFF ROUTE (when not hero) ─────────────────────────────────── */}
+        {!detourIsHero && offRouteStations.length > 0 && (
           <>
             <p className="text-xs font-bold text-ink-500 uppercase tracking-widest pt-2 px-1">
               Worth the detour?
