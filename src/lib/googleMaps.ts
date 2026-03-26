@@ -53,8 +53,8 @@ export async function getRoute(
     travelMode: google.maps.TravelMode.DRIVING,
   });
 
-  if (result.status !== 'OK' || !result.routes[0]) {
-    throw new Error(`Directions API returned status: ${result.status}`);
+  if (!result.routes[0]) {
+    throw new Error('Directions API returned no routes');
   }
 
   const route = result.routes[0];
