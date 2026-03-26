@@ -42,18 +42,6 @@ export function loadTankSettings(): Settings {
   return { tankCapacityL: 60, currentFuelPct: 50, efficiencyLper100km: 10.0, fuelType: 'U91' };
 }
 
-function FuelBar({ pct }: { pct: number }) {
-  const color =
-    pct >= 50 ? 'bg-emerald-400' : pct >= 25 ? 'bg-amber-400' : 'bg-red-400';
-  return (
-    <div className="h-1.5 bg-ink-700 rounded-full overflow-hidden">
-      <div
-        className={`h-full rounded-full transition-all duration-200 ${color}`}
-        style={{ width: `${pct}%` }}
-      />
-    </div>
-  );
-}
 
 function SliderRow({
   label,
@@ -183,28 +171,14 @@ export function TankSettings({ value, onChange }: Props) {
               minLabel="30L" maxLabel="120L"
             />
 
-            <div>
-              <div className="flex justify-between items-baseline mb-3">
-                <label className="text-xs font-semibold text-ink-500 uppercase tracking-widest">
-                  Current fuel
-                </label>
-                <span className="text-sm font-bold text-ink-50 tabular-nums">
-                  {currentFuelL} L
-                  <span className="text-ink-500 font-normal"> ({value.currentFuelPct}%)</span>
-                </span>
-              </div>
-              <FuelBar pct={value.currentFuelPct} />
-              <input
-                type="range"
-                min={0} max={100} step={5}
-                value={value.currentFuelPct}
-                onChange={(e) => update({ currentFuelPct: Number(e.target.value) })}
-                className="w-full mt-3"
-              />
-              <div className="flex justify-between text-xs text-ink-500 mt-1.5">
-                <span>Empty</span><span>Full</span>
-              </div>
-            </div>
+            <SliderRow
+              label="Current fuel"
+              value={value.currentFuelPct}
+              display={`${currentFuelL} L (${value.currentFuelPct}%)`}
+              min={0} max={100} step={5}
+              onChange={(v) => update({ currentFuelPct: v })}
+              minLabel="Empty" maxLabel="Full"
+            />
 
             <SliderRow
               label="Fuel economy"
