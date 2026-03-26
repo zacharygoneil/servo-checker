@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body, #root {
+    height: 100%;
+    background-color: #0A0A0A;
+  }
+
+  body {
+    background-color: #0A0A0A;
+    color: #F2F2F2;
+    @apply antialiased;
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    overscroll-behavior: none;
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Custom range inputs
+   ------------------------------------------------------------------------- */
+@layer components {
+  input[type='range'] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  input[type='range']::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: 2px;
+    background: #2A2A2A;
+  }
+  input[type='range']::-moz-range-track {
+    height: 4px;
+    border-radius: 2px;
+    background: #2A2A2A;
+  }
+
+  input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #F59E0B;
+    border: 3px solid #1A1A1A;
+    box-shadow: 0 1px 6px rgba(245, 158, 11, 0.4);
+    margin-top: -9px;
+    transition: box-shadow 0.15s;
+  }
+  input[type='range']::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #F59E0B;
+    border: 3px solid #1A1A1A;
+    box-shadow: 0 1px 6px rgba(245, 158, 11, 0.4);
+    cursor: pointer;
+  }
+  input[type='range']:focus::-webkit-slider-thumb {
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25);
+  }
+
+  /* Override Google Places injecting white background onto the input */
+  .pac-target-input {
+    background-color: #1A1A1A !important;
+    color: #F2F2F2 !important;
+  }
+  .pac-target-input::placeholder {
+    color: #555555 !important;
+  }
+
+  /* Google Places autocomplete dropdown — dark */
+  .pac-container {
+    background: #1A1A1A;
+    border: 1px solid #2A2A2A;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+    font-family: 'DM Sans', sans-serif;
+    margin-top: 4px;
+    overflow: hidden;
+    z-index: 9999;
+  }
+  .pac-item {
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #BBBBBB;
+    cursor: pointer;
+    border-top: 1px solid #2A2A2A;
+  }
+  .pac-item:first-child {
+    border-top: none;
+  }
+  .pac-item:hover,
+  .pac-item-selected {
+    background: #222222;
+  }
+  .pac-item-query {
+    color: #F2F2F2;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .pac-icon {
+    display: none;
+  }
+  .pac-matched {
+    color: #F59E0B;
+  }
+}
