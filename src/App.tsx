@@ -139,6 +139,12 @@ const optimiserResult = runOptimiser({
   if (screen === 'loading') return <LoadingScreen />;
 
   if (screen === 'results' && result && routeResult) {
+    // Hero is the best detour if it saves > $2, otherwise cheapest on-route
+    const heroStation =
+      result.offRouteStations.length > 0 && result.offRouteStations[0].netSavingDollars > 0
+        ? result.offRouteStations[0]
+        : result.onRouteStations[0];
+
     return (
       <div className="h-full flex flex-col">
         <div className="shrink-0" style={{ height: '45vh' }}>
@@ -146,6 +152,7 @@ const optimiserResult = runOptimiser({
             polyline={routeResult.polyline}
             topStations={result.topStations}
             destination={destinationLatLng}
+            heroStationId={heroStation?.site_id}
           />
         </div>
         <div className="flex-1 overflow-hidden bg-ink-950">

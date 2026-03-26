@@ -6,6 +6,8 @@ interface Props {
   polyline: LatLng[];
   topStations: RankedStation[];
   destination: LatLng | null;
+  /** site_id of the hero station — gets the amber highlight */
+  heroStationId?: string;
 }
 
 function PolylineOverlay({ polyline }: { polyline: LatLng[] }) {
@@ -47,7 +49,7 @@ function MarkerEmoji({ emoji, label }: { emoji: string; label: string }) {
 // Melbourne CBD as default center while loading
 const DEFAULT_CENTER = { lat: -37.814, lng: 144.963 };
 
-export function RouteMap({ polyline, topStations, destination }: Props) {
+export function RouteMap({ polyline, topStations, destination, heroStationId }: Props) {
   return (
     <Map
       style={{ width: '100%', height: '100%' }}
@@ -67,25 +69,30 @@ export function RouteMap({ polyline, topStations, destination }: Props) {
         </AdvancedMarker>
       )}
 
-      {/* Station pins — recommended station is highlighted */}
-      {topStations.map((station, i) => (
-        <AdvancedMarker
-          key={station.site_id}
-          position={{ lat: station.latitude, lng: station.longitude }}
-          zIndex={topStations.length - i}
-        >
-          <div
-            title={`${station.name} — ${station.selectedFuelPrice}¢/L`}
-            className={`flex items-center justify-center rounded-full shadow-md border-2 text-xl leading-none select-none ${
-              i === 0
-                ? 'w-11 h-11 bg-amber-500 border-ink-900 text-white'
-                : 'w-9 h-9 bg-ink-800 border-ink-600'
-            }`}
+      {/* Station pins — hero station gets amber highlight */}
+      {topStations.map((station, i) => {
+        const isHero = heroStationId
+          ? station.site_id === heroStationId
+          : i === 0;
+        return (
+          <AdvancedMarker
+            key={station.site_id}
+            position={{ lat: station.latitude, lng: station.longitude }}
+            zIndex={isHero ? topStations.length + 1 : topStations.length - i}
           >
-            ⛽
-          </div>
-        </AdvancedMarker>
-      ))}
+            <div
+              title={`${station.name} — ${station.selectedFuelPrice}¢/L`}
+              className={`flex items-center justify-center rounded-full shadow-md border-2 text-xl leading-none select-none ${
+                isHero
+                  ? 'w-11 h-11 bg-amber-500 border-ink-900 text-white'
+                  : 'w-9 h-9 bg-ink-800 border-ink-600'
+              }`}
+            >
+              ⛽
+            </div>
+          </AdvancedMarker>
+        );
+      })}
     </Map>
   );
 }
