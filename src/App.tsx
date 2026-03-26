@@ -241,7 +241,7 @@ const optimiserResult = runOptimiser({
         </button>
         <p className="text-center text-xs text-ink-700 mt-3">
           Prices from{' '}
-          <a href="https://www.vic.gov.au/fair-fuel" target="_blank" rel="noopener noreferrer" className="underline hover:text-ink-500">Service Victoria</a>
+          <a href="https://www.service.vic.gov.au/services/fair-fuel" target="_blank" rel="noopener noreferrer" className="underline hover:text-ink-500">Service Victoria</a>
           {' · '}
           <button type="button" onClick={() => setShowPrivacy(true)} className="underline hover:text-ink-500">Privacy</button>
         </p>
