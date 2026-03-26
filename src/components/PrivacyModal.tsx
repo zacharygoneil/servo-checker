@@ -13,7 +13,8 @@ export function PrivacyModal({ onClose }: Props) {
 
       {/* Sheet */}
       <div
-        className="relative w-full max-w-lg bg-ink-900 rounded-3xl border border-ink-700 p-6 space-y-4"
+        className="relative w-full max-w-lg bg-ink-900 rounded-3xl border border-ink-700 p-6 space-y-4 overflow-y-auto"
+        style={{ maxHeight: 'calc(100dvh - 3rem)' }}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between">
