@@ -5,6 +5,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ['"DM Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
       colors: {
         // Amber — the Servo Checker brand color

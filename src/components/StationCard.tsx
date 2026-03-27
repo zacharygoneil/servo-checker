@@ -48,7 +48,7 @@ function HeroCard({ station, onNavigate, baselineLabel }: {
       <div className="mx-5 mb-4 grid grid-cols-2 gap-3">
         {/* Price */}
         <div className="bg-ink-750 rounded-2xl px-4 py-3">
-          <p className="text-ink-50 text-4xl font-black tabular-nums leading-none">
+          <p className="text-ink-50 text-4xl font-black tabular-nums leading-none font-mono">
             {station.selectedFuelPrice.toFixed(1)}
           </p>
           <p className="text-ink-400 text-xs mt-1.5">cents per litre</p>
@@ -56,7 +56,7 @@ function HeroCard({ station, onNavigate, baselineLabel }: {
 
         {/* Saving */}
         <div className="bg-ink-750 rounded-2xl px-4 py-3">
-          <p className={`text-4xl font-black tabular-nums leading-none ${savingColor}`}>
+          <p className={`text-4xl font-black tabular-nums leading-none font-mono ${savingColor}`}>
             {saving >= 0 ? `$${saving.toFixed(2)}` : `−$${Math.abs(saving).toFixed(2)}`}
           </p>
           <p className="text-ink-400 text-xs mt-1.5 leading-tight">
@@ -135,7 +135,7 @@ function SecondaryCard({ station, rank, onNavigate, isOffRoute, baselineLabel }:
       <div className="flex items-center justify-between mt-2 pl-10">
         <p className="text-ink-500 text-xs">{detourText}</p>
         <div className="text-right">
-          <span className="text-xl font-black tabular-nums text-ink-50 leading-none">
+          <span className="text-xl font-black tabular-nums text-ink-50 leading-none font-mono">
             {station.selectedFuelPrice.toFixed(1)}<span className="text-xs font-semibold text-ink-400">¢</span>
           </span>
           <p className={`text-xs font-semibold mt-0.5 ${savingColor}`}>{savingText}</p>

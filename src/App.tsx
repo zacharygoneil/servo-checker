@@ -32,7 +32,7 @@ function WordMark() {
         </svg>
       </div>
       <div>
-        <h1 className="text-2xl font-black text-ink-50 leading-none tracking-tight">servo checker</h1>
+        <h1 className="text-2xl font-black text-ink-50 leading-none tracking-tight font-mono">servo checker</h1>
         <p className="text-xs text-ink-400 mt-0.5 font-medium">find the cheapest servo on your route.</p>
       </div>
     </div>
