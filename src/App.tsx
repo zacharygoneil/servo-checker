@@ -146,8 +146,8 @@ const optimiserResult = runOptimiser({
         : result.onRouteStations[0];
 
     return (
-      <div className="h-full flex flex-col">
-        <div className="shrink-0" style={{ height: '45vh' }}>
+      <div className="h-full overflow-y-auto bg-ink-950">
+        <div style={{ height: '45vh' }}>
           <RouteMap
             polyline={routeResult.polyline}
             topStations={result.topStations}
@@ -155,14 +155,12 @@ const optimiserResult = runOptimiser({
             heroStationId={heroStation?.site_id}
           />
         </div>
-        <div className="flex-1 overflow-hidden bg-ink-950">
-          <ResultsPanel
-            result={result}
-            origin={originLatLng!}
-            destinationAddress={destinationAddress}
-            onBack={() => setScreen('setup')}
-          />
-        </div>
+        <ResultsPanel
+          result={result}
+          origin={originLatLng!}
+          destinationAddress={destinationAddress}
+          onBack={() => setScreen('setup')}
+        />
       </div>
     );
   }

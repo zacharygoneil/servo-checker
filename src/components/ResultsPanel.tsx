@@ -39,9 +39,9 @@ export function ResultsPanel({ result, origin, destinationAddress, onBack }: Pro
   const detourIsHero = offRouteStations.length > 0 && offRouteStations[0].netSavingDollars > 0;
 
   return (
-    <div className="flex flex-col h-full bg-ink-950">
+    <div className="bg-ink-950">
       {/* Nav row */}
-      <div className="flex items-center justify-between px-5 pt-4 pb-2 shrink-0">
+      <div className="flex items-center justify-between px-5 pt-4 pb-2">
         <button
           type="button"
           onClick={onBack}
@@ -54,8 +54,7 @@ export function ResultsPanel({ result, origin, destinationAddress, onBack }: Pro
         </p>
       </div>
 
-      {/* Scrollable content */}
-      <div className="flex-1 overflow-y-auto px-5 pb-10 space-y-3">
+      <div className="px-5 pb-10 space-y-3">
 
         {/* Tank fine banner */}
         {tripStats.canCompleteWithoutStop && recommendation !== 'no_data' && (
