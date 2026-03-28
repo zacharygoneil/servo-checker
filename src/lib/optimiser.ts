@@ -24,7 +24,7 @@ export const ON_ROUTE_THRESHOLD_KM = 0.5;
 export const MARGINAL_SAVING_THRESHOLD_DOLLARS = 2.0;
 
 /** Maximum candidates returned per category (on-route / off-route). */
-const TOP_N = 5;
+const TOP_N = 3;
 
 // ---------------------------------------------------------------------------
 // Helpers
