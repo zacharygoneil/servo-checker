@@ -9,12 +9,13 @@ import { TankSettings, loadTankSettings } from './components/TankSettings';
 import type { Settings as TankSettingsValue } from './components/TankSettings';
 import { RouteMap } from './components/RouteMap';
 import { ResultsPanel } from './components/ResultsPanel';
+import { LandingScreen } from './components/LandingScreen';
 import { getRoute } from './lib/googleMaps';
 import { runOptimiser } from './lib/optimiser';
 import type { OptimiserResult, LatLng } from './types';
 import type { RouteResult } from './lib/googleMaps';
 
-type Screen = 'setup' | 'loading' | 'results';
+type Screen = 'landing' | 'setup' | 'loading' | 'results';
 
 // -------------------------------------------------------------------------
 // Wordmark
@@ -85,7 +86,7 @@ export default function App() {
   const [originOverride, setOriginOverride] = useState<LatLng | null>(null);
   const originLatLng = originOverride ?? geo.location;
 
-  const [screen, setScreen] = useState<Screen>('setup');
+  const [screen, setScreen] = useState<Screen>('landing');
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<OptimiserResult | null>(null);
@@ -135,6 +136,8 @@ const optimiserResult = runOptimiser({
   };
 
   const canSearch = !!originLatLng && !!destinationPlaceId && stations.length > 0;
+
+  if (screen === 'landing') return <LandingScreen onStart={() => setScreen('setup')} />;
 
   if (screen === 'loading') return <LoadingScreen />;
 
