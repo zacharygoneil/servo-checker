@@ -6,17 +6,21 @@ interface Props {
   onNavigate: () => void;
   isHero?: boolean;
   isOffRoute?: boolean;
-  /** e.g. "198.9¢ avg" or "192.1¢ cheapest on route" */
+  /** Primary baseline: e.g. "299.9¢ on route" (off-route) or "198.9¢ Vic avg" (on-route) */
   baselineLabel?: string;
+  /** Secondary baseline shown only on off-route hero: e.g. "198.9¢ Vic avg" */
+  vicAvgLabel?: string;
 }
 
 // -------------------------------------------------------------------------
 // Hero card — dark surface, big KPI numbers
 // -------------------------------------------------------------------------
-function HeroCard({ station, onNavigate, baselineLabel }: {
+function HeroCard({ station, onNavigate, isOffRoute, baselineLabel, vicAvgLabel }: {
   station: RankedStation;
   onNavigate: () => void;
+  isOffRoute?: boolean;
   baselineLabel?: string;
+  vicAvgLabel?: string;
 }) {
   const detourText =
     station.detourDistanceKm < 0.1
@@ -66,6 +70,12 @@ function HeroCard({ station, onNavigate, baselineLabel }: {
                 ? <>marginal<br /><span className="text-ink-500">{baselineLabel && `vs ${baselineLabel}`}</span></>
                 : 'costs more'}
           </p>
+          {/* For off-route heroes, also show saving vs Vic avg as context */}
+          {isOffRoute && vicAvgLabel && saving >= 0 && (
+            <p className="text-ink-600 text-xs mt-1 leading-tight">
+              also vs {vicAvgLabel}
+            </p>
+          )}
         </div>
       </div>
 
@@ -148,9 +158,9 @@ function SecondaryCard({ station, rank, onNavigate, isOffRoute, baselineLabel }:
 // -------------------------------------------------------------------------
 // Public export
 // -------------------------------------------------------------------------
-export function StationCard({ station, rank, onNavigate, isHero = false, isOffRoute = false, baselineLabel }: Props) {
+export function StationCard({ station, rank, onNavigate, isHero = false, isOffRoute = false, baselineLabel, vicAvgLabel }: Props) {
   if (isHero) {
-    return <HeroCard station={station} onNavigate={onNavigate} baselineLabel={baselineLabel} />;
+    return <HeroCard station={station} onNavigate={onNavigate} isOffRoute={isOffRoute} baselineLabel={baselineLabel} vicAvgLabel={vicAvgLabel} />;
   }
   return <SecondaryCard station={station} rank={rank} onNavigate={onNavigate} isOffRoute={isOffRoute} baselineLabel={baselineLabel} />;
 }

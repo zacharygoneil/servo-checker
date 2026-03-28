@@ -34,9 +34,12 @@ export function ResultsPanel({ result, origin, destinationAddress, onBack }: Pro
     ? `${cheapestOnRoutePriceCents.toFixed(1)}¢ on route`
     : onRouteBaselineLabel;
 
-  // If the top off-route station has a meaningful saving it becomes the overall
-  // hero recommendation — it's already been filtered to net saving > $2.
-  const detourIsHero = offRouteStations.length > 0 && offRouteStations[0].netSavingDollars > 0;
+  // Only promote off-route to hero if the net saving is genuinely meaningful (>= $2).
+  // A marginal saving isn't worth a detour — keep on-route as hero in that case.
+  const HERO_THRESHOLD = 2.0;
+  const detourIsHero =
+    offRouteStations.length > 0 &&
+    offRouteStations[0].netSavingDollars >= HERO_THRESHOLD;
 
   return (
     <div className="bg-ink-950">
@@ -98,6 +101,7 @@ export function ResultsPanel({ result, origin, destinationAddress, onBack }: Pro
               isHero
               isOffRoute
               baselineLabel={offRouteBaselineLabel}
+              vicAvgLabel={onRouteBaselineLabel}
               onNavigate={() => handleNavigate(offRouteStations[0])}
             />
 
