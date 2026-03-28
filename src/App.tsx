@@ -142,9 +142,9 @@ const optimiserResult = runOptimiser({
   if (screen === 'loading') return <LoadingScreen />;
 
   if (screen === 'results' && result && routeResult) {
-    // Hero is the best detour if it saves > $2, otherwise cheapest on-route
+    // Must match ResultsPanel's HERO_THRESHOLD — detour only wins if saving >= $2
     const heroStation =
-      result.offRouteStations.length > 0 && result.offRouteStations[0].netSavingDollars > 0
+      result.offRouteStations.length > 0 && result.offRouteStations[0].netSavingDollars >= 2.0
         ? result.offRouteStations[0]
         : result.onRouteStations[0];
 
