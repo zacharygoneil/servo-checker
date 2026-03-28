@@ -5,7 +5,13 @@ interface Props {
 export function PrivacyModal({ onClose }: Props) {
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center"
+      style={{
+        paddingTop: 'env(safe-area-inset-top)',
+        paddingBottom: 'max(1rem, env(safe-area-inset-bottom))',
+        paddingLeft: '1rem',
+        paddingRight: '1rem',
+      }}
       onClick={onClose}
     >
       {/* Backdrop */}
@@ -14,7 +20,7 @@ export function PrivacyModal({ onClose }: Props) {
       {/* Sheet */}
       <div
         className="relative w-full max-w-lg bg-ink-900 rounded-3xl border border-ink-700 p-6 space-y-4 overflow-y-auto"
-        style={{ maxHeight: 'calc(100dvh - 3rem)' }}
+        style={{ maxHeight: 'calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 2rem)' }}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between">
