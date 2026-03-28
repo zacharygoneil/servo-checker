@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useApiIsLoaded } from '@vis.gl/react-google-maps';
 import type { LatLng } from '../types';
+import { useDarkPacContainer } from '../hooks/useDarkPacContainer';
 
 type GpsState = 'loading' | 'ok' | 'denied' | 'waiting';
 
@@ -20,6 +21,7 @@ interface Props {
 export function OriginInput({ defaultValue, onSelect, onReset, isModified, gpsState = 'waiting' }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const apiLoaded = useApiIsLoaded();
+  useDarkPacContainer();
 
   // Pre-fill with the suburb name once GPS resolves (or when it changes).
   useEffect(() => {

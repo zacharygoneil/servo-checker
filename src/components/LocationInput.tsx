@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useApiIsLoaded } from '@vis.gl/react-google-maps';
+import { useDarkPacContainer } from '../hooks/useDarkPacContainer';
 
 interface Props {
   onSelect: (address: string, placeId: string) => void;
@@ -8,6 +9,7 @@ interface Props {
 export function LocationInput({ onSelect }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const apiLoaded = useApiIsLoaded();
+  useDarkPacContainer();
 
   useEffect(() => {
     if (!apiLoaded || !inputRef.current) return;
