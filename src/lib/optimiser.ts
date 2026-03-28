@@ -241,6 +241,7 @@ export function runOptimiser(input: OptimiserInput): OptimiserResult {
         isMarginal: netSavingDollars > 0 && netSavingDollars < MARGINAL_SAVING_THRESHOLD_DOLLARS,
       };
     })
+    .filter((s) => s.netSavingDollars > 0) // only show stations that are actually cheaper
     .sort((a, b) => b.netSavingDollars - a.netSavingDollars)
     .slice(0, TOP_N);
 
