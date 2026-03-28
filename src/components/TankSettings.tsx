@@ -30,7 +30,7 @@ export function loadTankSettings(): Settings {
       const parsed = JSON.parse(raw) as Partial<Settings>;
       const rawFuelType = parsed.fuelType ?? 'U91';
       return {
-        tankCapacityL: parsed.tankCapacityL ?? 60,
+        tankCapacityL: parsed.tankCapacityL ?? 70,
         currentFuelPct: parsed.currentFuelPct ?? 50,
         efficiencyLper100km: parsed.efficiencyLper100km ?? 10.0,
         fuelType: FUEL_CODE_MIGRATION[rawFuelType] ?? rawFuelType,
@@ -39,7 +39,7 @@ export function loadTankSettings(): Settings {
   } catch {
     // ignore
   }
-  return { tankCapacityL: 60, currentFuelPct: 50, efficiencyLper100km: 10.0, fuelType: 'U91' };
+  return { tankCapacityL: 70, currentFuelPct: 50, efficiencyLper100km: 10.0, fuelType: 'U91' };
 }
 
 
